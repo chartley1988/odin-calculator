@@ -1,0 +1,118 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+   --backgroundColor: #000814;
+   --interfaceBackgroundColor: #00182e;
+   --displayColor: #001D3D;
+   --displayFontColor: #FFD60A;
+   --buttonFontColor: rgb(239, 239, 239);
+   --buttonBackgroundColor: #092337;
+   --buttonBackgroundHover: #093353;
+}
+
+html {
+    background-color: var(--backgroundColor);
+}
+
+button {
+    background-color: var(--buttonBackgroundColor);
+    width: 80px;
+    height: 80px;
+    border-radius: 1rem;
+    border: none;
+    color: var(--buttonFontColor);
+    font-size: 4.2rem;
+    font-weight: 900;
+    overflow: hidden;
+}
+
+button:hover {
+    background-color: var(--buttonBackgroundHover);
+    transition: 0.1s;
+    transform: translateY(2px);
+}
+
+button:focus {
+    outline: 0;
+    background-color: var(--buttonBackgroundHover)
+}
+
+button:active {
+    transform: translateY(7px);
+    transition: 0.5s;
+    background-color: var(--buttonBackgroundHover)
+    
+}
+
+#reset-button {
+    width: 100%;
+    height: 60px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    font-size: 3rem;
+}
+
+#delete-button {
+    width: 100%;
+    height: 60px;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    font-size: 3rem;
+}
+
+#mem-button {
+    width: 100%;
+    height: 60px;
+    grid-column-start: 4;
+    grid-column-end: 5;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    font-size: 3rem;
+}
+
+.center-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.interface {
+    background-color: var(--interfaceBackgroundColor);
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(4, 80px);
+    grid-template-rows: 100px 0.75fr repeat(4, 80px);
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    border-radius: 2rem;
+}
+
+.display {
+    padding: 0 1rem 0 1rem;
+    display: flex;
+    border-radius: 1rem;
+    height: auto;
+    background-color: var(--displayColor);
+    justify-content: end;
+    align-items: center;
+    justify-self: stretch;
+    grid-column: 1 / span 4;
+    grid-row: 1;
+    color: var(--displayFontColor);
+    font-size: 4rem;
+    height: 100%;
+}
