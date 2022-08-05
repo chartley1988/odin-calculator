@@ -1,4 +1,6 @@
-input = ["0"] // Length should never be negative, or exceed 3.
+let number1 = undefined;
+let number2 = undefined;
+let operation = undefined;
 
 connectButtons();
 
@@ -18,43 +20,6 @@ function connectButtons() {
         button.addEventListener('touchend', computeInput)
     })
 }
-   
-
-function operate(operator, num1, num2) { 
-    switch(operator){
-        case "+": 
-            add(num1, num2);
-        case "-": 
-            subtract(num1, num2);
-        case "*": 
-            multiply(num1, num2);
-        case "/": 
-            divide(num1, num2);
-        default: 
-            return;
-    }
-}
-
-
-function resetCalculator() {
-    input = ["0"]
-    updateDisplay();
-}
-
-
-function generateDisplayText(textArray) {
-    console.log(input);
-    let newString = input[0];
-    newString = textArray.join(' ');
-    console.log(newString);
-    return(newString)
-}
-
-
-function updateDisplay() {
-    const displayValue = document.getElementsByClassName('display')[0];
-    displayValue.textContent = generateDisplayText(input);
-}
 
 
 function computeInput(event){
@@ -70,72 +35,122 @@ function computeInput(event){
         case "7":
         case "8":
         case "9":
-            appendNumber(buttonString);
+            if(operation === undefined) {
+                if(number1 !== undefined) {
+                    let number1String = convertToString(number1);
+                    number1String= number1String + buttonString;
+                    console.log(number1String);
+                    number1 = convertToNumber(number1String);
+                } else {
+                    number1 = (buttonString);
+                }
+                updateDisplay(number1);
+                return
+            } else {
+                if(number2 !== undefined) {
+                    let number2String = convertToString(number2);
+                    number2String= number2String + buttonString;
+                    console.log(number2String);
+                    number2 = convertToNumber(number2String);
+                } else {
+                    number2 = (buttonString);
+                }
+                updateDisplay(number2);
+                return
+            }
             break;
         case "+":
         case "-":
         case "*":
         case "/":
-            appendOperator(buttonString);
+            updateDisplay(buttonString);
+            operation = buttonString;
             break;
         case "Reset": 
             resetCalculator();
             break;
         case "Del":;
         case "M":;
+        case "=": operate(operation, number1, number2);
+    }
+}
+   
+
+function operate(operator, num1, num2) { 
+    switch(operator){
+        case "+": 
+            number1 = add(num1, num2);
+            updateDisplay(number1);
+            operation = undefined;
+            number2 = undefined;
+            return;
+        case "-": 
+            number1 = subtract(num1, num2);
+            operation = undefined;
+            number2 = undefined;
+            return;
+        case "*": 
+            number1 = multiply(num1, num2);
+            updateDisplay(number1);
+            number1 = number2;
+            operation = undefined;
+            number2 = undefined;
+            return;
+        case "/": 
+            number1 = divide(num1, num2);
+            updateDisplay(number1);
+            operation = undefined;
+            number2 = undefined;
+            return;
+        default: 
+            updateDisplay(num1);
     }
 }
 
 
-function appendNumber(number){
-    if (input.length < 2){
-        input[0] = [];
-        input[0].push(number);
-        updateDisplay();
-        return
-    } else if (input.length >= 2){
-        input[2] = [];
-        input[2].push(number);
-        updateDisplay();
-        return
-    }
+function resetCalculator() {
+    console.table(number1,number2);
+    updateDisplay(0);
+    number1 = undefined;
+    number2 = undefined;
+    operation = undefined;
+    console.table(number1,number2);
 }
 
 
-function appendOperator(operator){
-    if (input.length === 1) {
-        input[1] = operator;
-        updateDisplay(input);
-    }
+function updateDisplay(text) {
+    const displayValue = document.getElementsByClassName('display')[0];
+    displayValue.textContent = text;
 }
 
 
 function add(num1, num2) {
-    return(num1 + num2);
+    return(convertToNumber(num1) + convertToNumber(num2));
 }
 
 
 function subtract(num1, num2) {
-    return(num1 - num2);
+    return(convertToNumber(num1) - convertToNumber(num2));
 }
 
 
 function multiply(num1, num2) {
-    return(num1 * num2);
+    return(convertToNumber(num1) * convertToNumber(num2));
 }
 
 
 function divide(num1, num2) {
-    return(num1 / num2);
+    return(convertToNumber(num1) / convertToNumber(num2));
 }
 
 
 function convertToNumber(string) {
-    parseFloat(string)
+   return(parseFloat(string));
 }
 
 
 function convertToString(number) {
-    let newString = String(number);
-    return newString
+    let newString = number.toString();
+    //console.table(number, newString);
+    return(newString);
 }
