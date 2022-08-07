@@ -24,7 +24,7 @@ function connectButtons() {
     let buttons = getButtons();
     buttons.forEach(button => {
         button.addEventListener('click', computeInput)
-        button.addEventListener('touchend', computeInput)
+        button.addEventListener('touchstart', computeInput)
     })
 }
 
