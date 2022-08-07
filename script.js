@@ -1,15 +1,22 @@
-let number1 = undefined;
-let number2 = undefined;
-let operation = undefined;
+// To Do:
+//  - Limit characters so they fit on the screen.
+//  - Make the del key
+//  - Make the memory key.
+
+
+
+
+let equation = []; // This represents ["number1", "operation" "number2"]
+
 
 connectButtons();
 
 
-function getButtons() {
+function getButtons() { 
     const interface = document.getElementsByClassName('interface')[0];
     let buttons = Array.from(interface.children);
-    buttons.shift();
-    return buttons; // Removes the answer display from button list
+    buttons.shift(); // Removes the answer display from button list
+    return buttons; 
 }
 
 
@@ -25,82 +32,89 @@ function connectButtons() {
 function computeInput(event){
     let buttonString = event.target.textContent;
     switch(buttonString){
-        case "0":
-        case "1":
-        case "2":
-        case "3":
-        case "4":
-        case "5":
-        case "6":
-        case "7":
-        case "8":
-        case "9":
-            if(operation === undefined) {
-                if(number1 !== undefined) {
-                    let number1String = convertToString(number1);
-                    number1String= number1String + buttonString;
-                    console.log(number1String);
-                    number1 = convertToNumber(number1String);
-                } else {
-                    number1 = (buttonString);
-                }
-                updateDisplay(number1);
-                return
-            } else {
-                if(number2 !== undefined) {
-                    let number2String = convertToString(number2);
-                    number2String= number2String + buttonString;
-                    console.log(number2String);
-                    number2 = convertToNumber(number2String);
-                } else {
-                    number2 = (buttonString);
-                }
-                updateDisplay(number2);
-                return
+        case "0":case "1":case "2":case "3":case "4":case "5":
+        case "6":case "7":case "8":case "9":case ".":
+            switch(equation.length){
+                case 0:
+                    equation[0] = (buttonString);
+                    updateDisplay(buttonString);
+                    console.table("Length: 0", equation);
+                    return;
+                case 1:
+                    equation[0] = addCharacter(equation[0], buttonString)
+                    updateDisplay(equation[0]);
+                    console.table("Length: 1", equation);
+                    return;
+                case 2:
+                    equation[2] = buttonString;
+                    updateDisplay(buttonString);
+                    console.table("Length: 2", equation);
+                    return;
+                case 3:
+                    equation[2] = addCharacter(equation[2], buttonString)
+                    updateDisplay(equation[2]);
+                    console.table("Length: 3", equation);
+                    return; 
+            }       
+
+        case "+": case "-": case "*": case "/":
+            switch(equation.length) {
+                case 0:
+                    console.table("Length: 0", equation)
+                    return;
+                case 1:
+                    equation[1] = buttonString;
+                    updateDisplay(buttonString);
+                    console.table("Length: 1", equation)
+                    return;
+                case 2:
+                    equation[1] = buttonString;
+                    updateDisplay(buttonString);
+                    console.table("Length: 2", equation)
+                    return;;
+                case 3:
+                    operate(equation[1], equation[0], equation[2]);
+                    equation[1] = buttonString;
+                    updateDisplay(equation[0]);
+                    return;
             }
-            break;
-        case "+":
-        case "-":
-        case "*":
-        case "/":
-            updateDisplay(buttonString);
-            operation = buttonString;
-            break;
         case "Reset": 
             resetCalculator();
             break;
         case "Del":;
         case "M":;
-        case "=": operate(operation, number1, number2);
+        case "=": operate(equation[1], equation[0], equation[2]);
     }
 }
-   
+
+
+function addCharacter(num, character) { // num1 refers to number1 or number2, character is a number or decimal
+    numberString= num + character;
+    return (numberString);
+}
+
 
 function operate(operator, num1, num2) { 
     switch(operator){
         case "+": 
-            number1 = add(num1, num2);
-            updateDisplay(number1);
-            operation = undefined;
-            number2 = undefined;
+            equation[0] = add(num1, num2);
+            updateDisplay(equation[0]);
+            equation.length = 1;
             return;
         case "-": 
-            number1 = subtract(num1, num2);
-            operation = undefined;
-            number2 = undefined;
+            equation[0] = subtract(num1, num2);
+            updateDisplay(equation[0]);
+            equation.length = 1;
             return;
         case "*": 
-            number1 = multiply(num1, num2);
-            updateDisplay(number1);
-            number1 = number2;
-            operation = undefined;
-            number2 = undefined;
+        equation[0] = multiply(num1, num2);
+            updateDisplay(equation[0]);
+            equation.length = 1;
             return;
         case "/": 
-            number1 = divide(num1, num2);
-            updateDisplay(number1);
-            operation = undefined;
-            number2 = undefined;
+            equation[0] = divide(num1, num2);
+            updateDisplay(equation[0]);
+            equation.length = 1;
             return;
         default: 
             updateDisplay(num1);
@@ -109,12 +123,10 @@ function operate(operator, num1, num2) {
 
 
 function resetCalculator() {
-    console.table(number1,number2);
+    console.table(equation);
     updateDisplay(0);
-    number1 = undefined;
-    number2 = undefined;
-    operation = undefined;
-    console.table(number1,number2);
+    equation = [];
+    console.table(equation);
 }
 
 
@@ -148,9 +160,3 @@ function convertToNumber(string) {
    return(parseFloat(string));
 }
 
-
-function convertToString(number) {
-    let newString = number.toString();
-    //console.table(number, newString);
-    return(newString);
-}
