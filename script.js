@@ -1,11 +1,3 @@
-// To Do:
-//  - Limit characters so they fit on the screen to 12 digits
-//  - Make the del key
-//  - Make the memory key.
-
-
-
-
 let equation = []; // This represents ["number1", "operation" "number2"]
 const characterLimit = 10;
 const answerCap = 99999999;
@@ -35,8 +27,17 @@ function computeInput(event){
     let buttonString = event.target.textContent;
     let numberLength = 0;
     switch(buttonString){
-        case "0":case "1":case "2":case "3":case "4":case "5":
-        case "6":case "7":case "8":case "9":case ".":
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+        case ".":
             switch(equation.length){
                 case 0:
                     equation[0] = (buttonString);
