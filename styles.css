@@ -34,7 +34,7 @@ button {
 button:hover {
     background-color: var(--buttonBackgroundHover);
     transition: 0.1s;
-    transform: translateY(2px);
+    transform:scale(2rem);
 }
 
 button:focus {
@@ -43,7 +43,6 @@ button:focus {
 }
 
 button:active {
-    transform: translateY(7px);
     transition: 0.5s;
     background-color: var(--buttonBackgroundHover)
     

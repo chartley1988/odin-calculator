@@ -1,5 +1,5 @@
 // To Do:
-//  - Limit characters so they fit on the screen.
+//  - Limit characters so they fit on the screen to 12 digits
 //  - Make the del key
 //  - Make the memory key.
 
@@ -7,6 +7,8 @@
 
 
 let equation = []; // This represents ["number1", "operation" "number2"]
+const characterLimit = 10;
+const answerCap = 99999999;
 
 
 connectButtons();
@@ -31,6 +33,7 @@ function connectButtons() {
 
 function computeInput(event){
     let buttonString = event.target.textContent;
+    let numberLength = 0;
     switch(buttonString){
         case "0":case "1":case "2":case "3":case "4":case "5":
         case "6":case "7":case "8":case "9":case ".":
@@ -41,20 +44,40 @@ function computeInput(event){
                     console.table("Length: 0", equation);
                     return;
                 case 1:
-                    equation[0] = addCharacter(equation[0], buttonString)
-                    updateDisplay(equation[0]);
-                    console.table("Length: 1", equation);
-                    return;
+                    if ((buttonString === '.') && ((equation[0]).includes('.'))){
+                        return
+                    }
+
+                    numberLength = (equation[0]).length;
+
+                    if (numberLength < characterLimit){
+                        equation[0] = addCharacter(equation[0], buttonString)
+                        updateDisplay(equation[0]);
+                        console.table("Length: 1", equation);
+                        return;
+                    } else {
+                       return; 
+                    } 
                 case 2:
                     equation[2] = buttonString;
                     updateDisplay(buttonString);
                     console.table("Length: 2", equation);
                     return;
                 case 3:
-                    equation[2] = addCharacter(equation[2], buttonString)
-                    updateDisplay(equation[2]);
-                    console.table("Length: 3", equation);
-                    return; 
+                    if ((buttonString === '.') && ((equation[2]).includes('.'))){
+                        return
+                    }
+
+                    numberLength = (equation[2]).length;
+
+                    if (numberLength < characterLimit){
+                        equation[2] = addCharacter(equation[2], buttonString)
+                        updateDisplay(equation[2]);
+                        console.table("Length: 3", equation);
+                        return;
+                    } else {
+                       return; 
+                    } 
             }       
 
         case "+": case "-": case "*": case "/":
@@ -137,26 +160,42 @@ function updateDisplay(text) {
 
 
 function add(num1, num2) {
-    return(convertToNumber(num1) + convertToNumber(num2));
+    let answer = (convertToNumber(num1) + convertToNumber(num2));
+    return limitCharacters(answer);
 }
 
 
 function subtract(num1, num2) {
-    return(convertToNumber(num1) - convertToNumber(num2));
+    let answer = (convertToNumber(num1) - convertToNumber(num2));
+    return limitCharacters(answer);
 }
 
 
 function multiply(num1, num2) {
-    return(convertToNumber(num1) * convertToNumber(num2));
+    let answer = (convertToNumber(num1) * convertToNumber(num2));
+    return limitCharacters(answer);
 }
 
 
 function divide(num1, num2) {
-    return(convertToNumber(num1) / convertToNumber(num2));
+    let answer = (convertToNumber(num1) / convertToNumber(num2));
+    return limitCharacters(answer);
 }
 
 
 function convertToNumber(string) {
    return(parseFloat(string));
+}
+
+
+function limitCharacters(number) {
+    let numberString = String(number);
+    let numberLength = numberString.length;
+    console.log("character length of number is " + numberLength);
+    if (numberLength > characterLimit) {
+        return number.toPrecision(characterLimit); 
+    } else {
+        return number;
+    }  
 }
 
